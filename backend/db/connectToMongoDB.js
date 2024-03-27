@@ -1,12 +1,21 @@
 import mongoose from "mongoose";
 
-const connctToMongoDB = async ()=>{
-    try{
-await mongoose.connect(process.env.Mongo_DB_URI)
-console.log("connected to MongoDB")
-    }catch(error){
-        console.log("Error connecting to MongoDB" , error.message)
-    }
-}
+const connectToMongoDB = async () => {
+    const MONGODB_URI = process.env.MONGODB_URI;
+    const JWT_SECRET = process.env.JWT_SECRET;
 
-export default connctToMongoDB;
+    try {
+        await mongoose.connect(MONGODB_URI, {
+           
+         
+           // useNewUrlParser: true,
+            // useUnifiedTopology: true,
+            // useCreateIndex: false
+        });
+        console.log("Connected to MongoDB");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error.message);
+    }
+};
+
+export default connectToMongoDB;

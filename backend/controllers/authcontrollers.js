@@ -6,18 +6,13 @@ export const login = async(req,res) =>{
 try{
 const {username,password}=req.body;
 const user = await User.findOne({username});
-if(!user){
-    return res.status(400).json({error:"User not found register first"});
-}
-const isPasswordCorrect = await bcryptjs.compare(password,user?.password || ""); // add this part to resolve error of empty password passing to bcryptjs
-
-if(!isPasswordCorrect){
-    return res.status(400).json({error: "Invalid password"});
-}
+const isPasswordCorrect = await bcryptjs.compare(password, user?.password || "");
+		if (!user || !isPasswordCorrect) {
+			return res.status(400).json({ error: "Invalid username or password" });
+		}
 generateTokenAndSetCookie(user._id,res)
 
 res.status(201).json({message : "User logged in successfully",
-
  username:user.username,
  firstName:user.firstName,
  lastName:user.lastName,
